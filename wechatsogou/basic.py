@@ -51,6 +51,8 @@ from .filecache import WechatCache
 import logging
 
 logger = logging.getLogger()
+stdout_handler = logging.StreamHandler(sys.stdout)
+logger.addHandler(stdout_handler)
 
 
 class WechatSogouBasic(WechatSogouBase):
@@ -177,7 +179,8 @@ class WechatSogouBasic(WechatSogouBase):
             WechatSogouVcodeException: 解封失败，可能验证码识别失败
         """
         max_count = 0
-        while(max_count < 10) :
+        #while(max_count < 10) :
+        while(max_count < 1) :
             print(u"出现验证码，准备自动识别")
             max_count += 1
             logger.debug('vcode appear, using _jiefeng')
@@ -249,16 +252,14 @@ class WechatSogouBasic(WechatSogouBase):
                 print(u"没有设置自动识别模块用户名、密码，无法执行")
                 break
 
-
-            
-
     def _ocr_for_get_gzh_article_by_url_text(self, url):
         print(u"出现验证码，准备自动识别2")
         logger.debug('vcode appear, using _ocr_for_get_gzh_article_by_url_text')
+        print('vcode appear, using _ocr_for_get_gzh_article_by_url_text')
         
         if hasattr(self, '_ocr'):
             max_count = 0
-            while(max_count < 10):
+            while(max_count < 2):
                 max_count += 1
                 timestr = str(time.time()).replace('.', '')
                 timever = timestr[0:13] + '.' + timestr[13:17]
@@ -422,6 +423,8 @@ class WechatSogouBasic(WechatSogouBase):
         """
 
         text = self._get(url, 'get', host='mp.weixin.qq.com')
+        #eddie
+        #print("in _get_gzh_article_by_url_text, url:" + url + " resp:" + text)
         
         if u'为了保护你的网络安全，请输入验证码' in text:
             print u'为了保护你的网络安全，请输入验证码'
@@ -429,7 +432,9 @@ class WechatSogouBasic(WechatSogouBase):
                 self._ocr_for_get_gzh_article_by_url_text(url)
 
                 text = self._get(url, 'get', host='mp.weixin.qq.com')
-            except:
+            except Exception as e:
+                print("except occurn _get_gzh_article_by_url_text for url:" + url)
+                print(e)
                 text = ""
         return text
 
@@ -519,6 +524,8 @@ class WechatSogouBasic(WechatSogouBase):
         uin = kwargs.get('uin', '')
         key = kwargs.get('key', '')
         items = list()
+        print("msgdict")
+        print(msgdict)
         for listdic in msgdict['list']:
             item = dict()
             comm_msg_info = listdic['comm_msg_info']

@@ -267,11 +267,13 @@ class WechatSogouApi(WechatSogouBasic):
         
         if u'链接已过期' in text:
             return '链接已过期'
+        print("text is:" + text)
+        if text == "":
+            raise WechatSogouException('Exception happen')
         return self._deal_gzh_article_dict(self._get_gzh_article_by_url_dict(text))
 
     def get_gzh_message_and_info(self, **kwargs):
         """最近文章页  公众号信息 和 群发信息
-
         Args:
             ::param url 最近文章地址
             ::param wechatid 微信号
@@ -338,7 +340,7 @@ class WechatSogouApi(WechatSogouBasic):
         else:
             raise WechatSogouException('deal_content need param url or text')
 
-        bsObj = BeautifulSoup(text)
+        bsObj = BeautifulSoup(text, "lxml")
         content_text = bsObj.find("div", {"class":"rich_media_content", "id":"js_content"})
         content_html = content_text.get_text()
         # content_html = re.findall(u'<div class="rich_media_content " id="js_content">(.*?)</div>', text, re.S)

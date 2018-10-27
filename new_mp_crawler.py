@@ -12,8 +12,9 @@ import logging
 import logging.config
 
 # 日志
-logging.config.fileConfig('auto_add_mp_logging.conf')
+logging.config.fileConfig('conf/new_mp_crawler_logger.conf')
 logger = logging.getLogger()
+logger.info("start")
 
 # 搜索API实例
 wechats = WechatSogouApi()
@@ -25,15 +26,15 @@ succ_count = 0
 
 for add_item in add_list :
     try:
-        print(add_item)
+        logger.info(add_item)
         if add_item['wx_hao']:
-            print("add by wx_hao")
+            logger.info("add by wx_hao")
             mysql.where_sql = "wx_hao ='" + add_item['wx_hao'] + "'"
             mp_data = mysql.table('mp_info').find(1)
             if not mp_data :
                 wechat_info = wechats.get_gzh_info(add_item['wx_hao'])
                 time.sleep(1)
-                #print(wechat_info)
+                logger.info(wechat_info)
                 if(wechat_info != ""):
                     mysql.table('mp_info').add({'name':wechat_info['name'],
                                                 'wx_hao':wechat_info['wechatid'],
@@ -44,23 +45,29 @@ for add_item in add_list :
                                                 'wz_url': wechat_info['url'],
                                                 'last_qunfa_id': 0,
                                                 'create_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))})
+                else:
+                    logger.info(u"wechat info for id:" + add_item['wx_hao'] + " error")
             else:
-                print(u"已经存在的公众号")
+                logger.info(u"已经存在的公众号")
         elif add_item['name']:
-            #获取对应信息
-            print("add by name")
+            logger.info("add by name")
             wechat_infos = wechats.search_gzh_info(add_item['name'].encode('utf8'))
             time.sleep(1)
-            #print(wechat_infos)
+            logger.info(wechat_infos)
+            cnt = 3
             for wx_item in wechat_infos :
+                cnt = cnt - 1
+                if cnt <= 0:
+                    logger.info("too many wx_hao match the name, just take top3")
+                    break
                 #公众号数据写入数据库
                 #搜索一下是否已经存在
-                print(wx_item['name'])
+                logger.info(wx_item['name'])
                 mysql.where_sql = "wx_hao ='" + wx_item['wechatid'] + "'"
-                print(mysql.where_sql)
+                logger.info(mysql.where_sql)
                 mp_data = mysql.table('mp_info').find(1)
                 if not mp_data :
-                    print(wx_item['name'].decode("utf-8"))
+                    logger.info(wx_item['name'].decode("utf-8"))
                     mysql.table('mp_info').add({ 'name':wx_item['name'],
                                 'wx_hao':wx_item['wechatid'],
                                 'company':wx_item['renzhen'],
@@ -71,16 +78,16 @@ for add_item in add_list :
                                 'last_qunfa_id': 0,
                                 'create_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))})
                 else:
-                    print(u"已经存在的公众号")
+                    logger.info(u"已经存在的公众号")
                 
         #删除已添加项
         mysql.table('add_mp_list').where({'_id':add_item['_id']}).delete()
-    except:
-        print(u"出错，继续")
+    except Exception, e:
+        #logger.info(u"出错，继续" + e.message + " for wx_hao:" + add_item['_id'])
+        logger.info(u"出错，继续" + e.message )
         continue
 
-
-print("success")
+logger.info("all process over")
 
     
 

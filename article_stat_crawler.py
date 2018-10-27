@@ -11,9 +11,8 @@ import logging
 import logging.config
 
 # 日志
-logging.config.fileConfig('logging.conf')
+logging.config.fileConfig('conf/logging.conf')
 logger = logging.getLogger()
-
 
 # 搜索API实例
 wechats = WechatSogouApi()
@@ -26,14 +25,12 @@ wechats = WechatSogouApi()
 #4、开启下面这行语句
 #wechats = WechatSogouApi(cookies_file={'file_name':'cookies.txt'})  #使用外部cookie
 
-
 #数据库实例
 mysql.order_sql = " order by _id desc"
 mysql = mysql('mp_info')
 
 #循环获取数据库中所有公众号
 mp_list = mysql.find(0)
-
 
 now_time = datetime.datetime.now()
 yes_time = now_time + datetime.timedelta(days=-1) #只更新1天之内的数据，可以修改days=-2就是2天
@@ -79,8 +76,10 @@ for item in mp_list:
 
             if wz_item['type'] == '49':
                 #获取文章数据
-                time.sleep(0.5)
+                time.sleep(3)
                 article_info = wechats.deal_article(url=wz_item['content_url'])
+                print("print article_info")
+                print(article_info)
                 mysql.where_sql = " mp_id=%d and qunfa_id=%d and msg_index=%d" %(item['_id'],wz_item['qunfa_id'],wz_item['main'])
                 #print(mysql.where_sql)
                 wz_data = mysql.table('wenzhang_info').find(1)

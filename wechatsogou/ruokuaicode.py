@@ -29,6 +29,8 @@ class RClient(WechatSogouBase):
         im: 图片字节
         im_type: 题目类型
         """
+        #eddie
+        #print("in RClient.create: im:" + im + " im_type:" + im_type + " timeout:" + timeout) 
         params = {
             'typeid': im_type,
             'timeout': timeout,
