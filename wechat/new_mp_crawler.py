@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-#添加指定公众号到爬虫数据库
 
-# 导入包
 from wechatsogou.tools import *
 from wechatsogou import *
 from PIL import Image
@@ -9,17 +7,13 @@ import datetime
 import time
 import sys,locale
 import logging
-import logging.config
 
-# 日志
-logging.config.fileConfig('conf/new_mp_crawler_logger.conf')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 logger.info("start")
 
-# 搜索API实例
 wechats = WechatSogouApi()
 
-#数据库实例
 mysql = mysql('add_mp_list')
 add_list = mysql.find(0)
 succ_count = 0
@@ -60,8 +54,7 @@ for add_item in add_list :
                 if cnt <= 0:
                     logger.info("too many wx_hao match the name, just take top3")
                     break
-                #公众号数据写入数据库
-                #搜索一下是否已经存在
+                
                 logger.info(wx_item['name'])
                 mysql.where_sql = "wx_hao ='" + wx_item['wechatid'] + "'"
                 logger.info(mysql.where_sql)
