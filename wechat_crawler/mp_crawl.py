@@ -88,7 +88,12 @@ class Runner():
         for wechat_id in succ_ids:
             self.source.delete(wechat_id)
             logger.info(u"wechat_id:%s process ok, remove from source", wechat_id)
-        return True
+
+        if len(succ_ids) == 0:
+            return False;
+        if len(items) == task_size:
+            return True;
+        return False
 
     def run(self):
         while True:
