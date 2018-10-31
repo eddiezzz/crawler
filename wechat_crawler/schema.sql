@@ -34,6 +34,7 @@ DROP TABLE IF EXISTS `wechat_mp_stat`;
 DROP TABLE IF EXISTS `wechat_article_profile`;
 CREATE TABLE `wechat_article_profile` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `article_id` varchar(50) NULL COMMENT 'ID',
   `author` varchar(50) DEFAULT '' COMMENT '作者',
   `content_url` varchar(300) DEFAULT '' COMMENT '文章链接',
   `source_url` varchar(300) DEFAULT '' COMMENT '阅读原文链接',
@@ -47,6 +48,7 @@ CREATE TABLE `wechat_article_profile` (
   `type` int(11) DEFAULT '0' COMMENT '消息类型，均是49（在手机端历史消息页有其他类型，网页端最近10条消息页只有49），表示图文', 
   `abstract` varchar(500) DEFAULT '' COMMENT '文章摘要',
   `wechat_id` varchar(50) DEFAULT '0' COMMENT '对应的公众号ID',
+  `wechat_name` varchar(30) DEFAULT '' COMMENT 'wechat name',
   PRIMARY KEY (`_id`),
   INDEX `uniq_id`(`send_id`, `fileid`, `wechat_id`),
   INDEX `wechat_id`(`wechat_id`)
@@ -55,7 +57,7 @@ CREATE TABLE `wechat_article_profile` (
 DROP TABLE IF EXISTS `wechat_article_stat`;
 CREATE TABLE `wechat_article_stat` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `article_id` int(11) DEFAULT '0' COMMENT '对应的文章ID',
+  `article_id` varchar(50) NULL COMMENT 'ID',
   `updatetime` datetime DEFAULT NULL COMMENT '统计时间',
   `read_count` int(11) DEFAULT '0' COMMENT '新增阅读数',
   `like_count` int(11) DEFAULT '0' COMMENT '新增点攒数',
@@ -72,4 +74,18 @@ CREATE TABLE `user_subs` (
   `sub_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '加入订阅时间',
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `wechat_article_detail`;
+CREATE TABLE `wechat_article_detail` (
+  `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `title` varchar(300) DEFAULT '' COMMENT '文章标题',
+  `article_id` varchar(50) NULL COMMENT 'ID',
+  `wechat_name` varchar(30) DEFAULT '' COMMENT 'wechat name',
+  `wechat_id` varchar(30) DEFAULT '' COMMENT 'wechat id',
+  `content_url` varchar(300) DEFAULT '' COMMENT '文章链接',
+  `html` MEDIUMTEXT COMMENT 'html detail',
+  PRIMARY KEY (`_id`),
+  UNIQUE KEY `article_id`(`article_id`) 
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
+
 
