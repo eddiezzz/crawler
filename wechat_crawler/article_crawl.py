@@ -115,7 +115,8 @@ class ArticleCrawler():
                 'wechat_name': wechat_name,
                 'html': content
                 })
-        logger.info("into detail:%s", article_id)
+        logger.debug("into detail:%s", article_id)
+        new_articles += 1
         return True
 
     def _save_one(self, data, wechat_id, wechat_name):
@@ -158,7 +159,7 @@ class ArticleCrawler():
                 'wechat_id': wechat_id,
                 'wechat_name': wechat_name
                 })
-        logger.info("into profile:%s", article_id)
+        logger.debug("into profile:%s", article_id)
 
         
 class Runner():
@@ -211,6 +212,7 @@ class Runner():
                 break
             timeutil.sleep()
         logger.info("total:%d succ:%d", self.total, self.succ)
+        logger.info("%d new articles", new_articles)
 
 if __name__ == '__main__':
     runner = Runner()
