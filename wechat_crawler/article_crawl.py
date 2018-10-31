@@ -84,7 +84,7 @@ class ArticleCrawler():
 
     def fetch_mp_articles(self, wechat_id):
         timeutil.sleep()
-        res = self.wechat.get_gzh_article_by_history(wechat_id, identify_image_callback_sogou=identify_image_callback_by_rk)
+        res = self.wechat.get_gzh_article_by_history(wechat_id, identify_image_callback_sogou=identify_image_callback_by_rk, identify_image_callback_weixin=identify_image_callback_by_rk)
         return res
 
     def save(self, data):
