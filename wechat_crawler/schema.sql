@@ -38,7 +38,7 @@ CREATE TABLE `wechat_article_profile` (
   `article_id` varchar(50) NULL COMMENT 'ID',
   `author` varchar(50) DEFAULT '' COMMENT '作者',
   `content_url` varchar(300) DEFAULT '' COMMENT '文章链接',
-  `source_url` varchar(300) DEFAULT '' COMMENT '阅读原文链接',
+  `source_url` varchar(500) DEFAULT '' COMMENT '阅读原文链接',
   `copyright_stat` int(1) DEFAULT '0' COMMENT '11表示原创 其它表示非原创',
   `cover_url` varchar(300) DEFAULT '' COMMENT '封面图URL',
   `datetime` datetime DEFAULT NULL COMMENT '文章推送时间',

@@ -13,7 +13,7 @@ class Parser():
         return self.soup1.getText().replace('/\s/g','')
 
     def formatForWechat(self):
-        tags = self.soup2.find_all(['script', 'image', 'style', 'link', 'img'])
+        tags = self.soup2.find_all(['script', 'image', 'style', 'link', 'img', 'title'])
         for tag in tags:
             tag.decompose()
         tags = self.soup2.find_all(['p'])
