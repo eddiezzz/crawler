@@ -6,7 +6,6 @@ class TimeUtil():
         self.min = min
         self.max = max
     def sleep(self, interval=None):
-        interval = 1
         if interval:
             time.sleep(interval)
         else:
