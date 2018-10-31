@@ -8,8 +8,8 @@ from util import *
 from urllib2 import Request, urlopen
 import hash
 from BeautifulSoup import BeautifulSoup
-from rk import RClient
 from config import *
+from image_ocr import *
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s - %(filename)s:%(lineno)d] - %(levelname)s: %(message)s')
 logger = logging.getLogger()
@@ -18,36 +18,6 @@ timeutil = TimeUtil(3, 10)
 
 new_articles = 0
 
-g_ocr = RClient(rk_user, rk_passwd, rk_app, rk_key)
-def identify_image_callback_by_rk(img):
-    """识别二维码
-
-    Parameters
-    ----------
-    img : bytes
-        验证码图片二进制数据
-
-    Returns
-    -------
-    str
-        验证码文字
-    """
-    random_filename = ("./images/%d.png") % (time.time())
-    im = readimg(img)
-    im.save(random_filename)
-    #im.show()
-    #return input("please input code: ")
-    result = g_ocr.rk_create(img, 3040, 60)
-    logger.info(result)
-    if not result.has_key('Result') :
-        logger.warn("rk error for file:%s", random_filename)
-    else:
-        img_code = result['Result']
-        logger.warn("rk succ for file:%s, code:%s", random_filename, img_code)
-        im.close()
-        return img_code
-    im.close()
- 
 def get_html(url):
     req = Request(url)
     req.add_header('Accept-Encoding', 'utf-8')

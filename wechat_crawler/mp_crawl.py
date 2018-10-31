@@ -5,6 +5,7 @@ from mysql import *
 import logging
 import wechatsogou
 from util import *
+from image_ocr import *
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s - %(filename)s:%(lineno)d] - %(levelname)s: %(message)s')
 logger = logging.getLogger()
@@ -13,7 +14,7 @@ db = mysql()
 
 class WechatMpCrawler():
     def __init__(self):
-        self.wechat = wechatsogou.WechatSogouAPI(captcha_break_time=3)
+        self.wechat = wechatsogou.WechatSogouAPI(captcha_break_time=1)
 
     def get_profile(self, wechat_id):
         db.where_sql = '''wechat_id = "%s" or wechat_name = "%s" ''' % (wechat_id, wechat_id)
@@ -22,7 +23,7 @@ class WechatMpCrawler():
     def fetch(self, wechat_id):
         timeutil.sleep()
         logger.info("search for wechat_id:%s", wechat_id)
-        return self.wechat.get_gzh_info(wechat_id)
+        return self.wechat.get_gzh_info(wechat_id, identify_image_callback_sogou=identify_image_callback_by_rk, identify_image_callback_weixin=identify_image_callback_by_rk)
 
     def save(self, data):
         db.table("wechat_mp_profile").add({

@@ -8,7 +8,6 @@ from config import *
 
 
 class RClient(object):
-
     def __init__(self, username, password, soft_id, soft_key):
         self.username = username
         self.password = md5(password).hexdigest()
