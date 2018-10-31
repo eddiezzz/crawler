@@ -10,13 +10,14 @@ import hash
 from BeautifulSoup import BeautifulSoup
 from config import *
 from image_ocr import *
+from parser import *
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s - %(filename)s:%(lineno)d] - %(levelname)s: %(message)s')
 logger = logging.getLogger()
 db = mysql()
 timeutil = TimeUtil(3, 10)
 
-new_articles = 0
+g_new_articles = 0
 
 def get_html(url):
     req = Request(url)
@@ -27,10 +28,9 @@ def get_html(url):
 
 
 def format_html(html):
-    soup = BeautifulSoup(html)
-    for s in soup('script'):
-        s.extract()
-    return soup.__str__()
+    parser = Parser(html)
+    new_doc = parser.formatForWechat()
+    return new_doc
 
 def gen_article_id(content_url):
     #return mmh3.hash128(content_url)
@@ -86,7 +86,8 @@ class ArticleCrawler():
                 'html': content
                 })
         logger.debug("into detail:%s", article_id)
-        new_articles += 1
+        global g_new_articles
+        g_new_articles += 1
         return True
 
     def _save_one(self, data, wechat_id, wechat_name):
@@ -182,7 +183,7 @@ class Runner():
                 break
             timeutil.sleep()
         logger.info("total:%d succ:%d", self.total, self.succ)
-        logger.info("%d new articles", new_articles)
+        logger.info("%d new articles", g_new_articles)
 
 if __name__ == '__main__':
     runner = Runner()
