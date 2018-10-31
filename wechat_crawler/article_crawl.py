@@ -44,6 +44,8 @@ def identify_image_callback_by_rk(img):
     else:
         img_code = result['Result']
         logger.warn("rk succ for file:%s, code:%s", random_filename, img_code)
+        im.close()
+        return img_code
     im.close()
  
 def get_html(url):
