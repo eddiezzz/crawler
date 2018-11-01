@@ -33,7 +33,7 @@ def identify_image_callback_by_rk(img):
         logger.warn("rk error for file:%s", random_filename)
     else:
         img_code = result['Result']
-        logger.warn("rk succ for file:%s, code:%s", random_filename, img_code)
+        logger.info("rk succ for file:%s, code:%s", random_filename, img_code)
         im.close()
         return img_code
     im.close()
