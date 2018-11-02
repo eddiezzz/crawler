@@ -47,6 +47,7 @@ class Parser():
         return soup.decode()
 
     def _formatImage(self, doc):
+        doc = doc.replace('data-src', 'src')
         soup = BeautifulSoup(doc, 'lxml')
         filters = ['image', 'img']
         tags = soup.find_all(filters)
@@ -66,8 +67,8 @@ class Parser():
         new_doc = self._tripToomanyLevel(self.doc)
         new_doc = self._formatImage(new_doc)
         soup = BeautifulSoup(new_doc, 'lxml')
-        #filters = ['image', 'img', 'title', 'style', 'script']
         filters = ['title', 'style', 'script']
+        #filters = ['title', 'script']
         tags = soup.find_all(filters)
         for tag in tags:
             tag.decompose()
