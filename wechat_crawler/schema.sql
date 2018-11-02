@@ -84,6 +84,12 @@ CREATE TABLE `wechat_article_detail` (
   `wechat_name` varchar(30) DEFAULT '' COMMENT 'wechat name',
   `wechat_id` varchar(30) DEFAULT '' COMMENT 'wechat id',
   `content_url` varchar(300) DEFAULT '' COMMENT '文章链接',
+  `tag1` varchar(50) DEFAULT '' COMMENT 'machine learning tags',
+  `tag1_weight` float(6, 4) DEFAULT '0.0' COMMENT 'machine learning tags',
+  `tag2` varchar(50) DEFAULT '' COMMENT 'machine learning tags',
+  `tag2_weight` float(6, 4) DEFAULT '0.0' COMMENT 'machine learning tags',
+  `tag3` varchar(50) DEFAULT '' COMMENT 'machine learning tags',
+  `tag3_weight` float(6, 4) DEFAULT '0.0' COMMENT 'machine learning tags',
   `html` MEDIUMTEXT COMMENT 'html detail',
   PRIMARY KEY (`_id`),
   UNIQUE KEY `article_id`(`article_id`) 

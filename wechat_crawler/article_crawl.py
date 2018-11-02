@@ -11,6 +11,7 @@ from BeautifulSoup import BeautifulSoup
 from config import *
 from image_ocr import *
 from parser import *
+import tags
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s - %(filename)s:%(lineno)d] - %(levelname)s: %(message)s')
 logger = logging.getLogger()
@@ -78,6 +79,7 @@ class ArticleCrawler():
             if not html:
                 return False, None
             html, all_text = format_html(html)
+            tag_list = tags.ana_tags(all_text)
             db.clear_stats()
             db.table("wechat_article_detail").add({
                     'article_id': article_id,
@@ -85,12 +87,18 @@ class ArticleCrawler():
                     'title': title,
                     'wechat_id': wechat_id,
                     'wechat_name': wechat_name,
+                    'tag1': tag_list[0][0],
+                    'tag1_weight': tag_list[0][1],
+                    'tag2': tag_list[1][0],
+                    'tag2_weight': tag_list[1][1],
+                    'tag3': tag_list[2][0],
+                    'tag3_weight': tag_list[2][1],
                     'html': html
                     })
             logger.debug("into detail:%s", article_id)
             global g_new_articles
             g_new_articles += 1
-            return True, {'all_text':all_text}
+            return True, {'all_text':all_text, 'tags': tag_list}
 
         except Exception as e:
             print(e)
