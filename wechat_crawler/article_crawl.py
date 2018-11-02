@@ -30,7 +30,8 @@ def get_html(url):
 def format_html(html):
     parser = Parser(html)
     new_doc = parser.formatForWechat()
-    return new_doc
+    all_text = parser.extractText()
+    return new_doc, all_text
 
 def gen_article_id(content_url):
     #return mmh3.hash128(content_url)
@@ -72,23 +73,30 @@ class ArticleCrawler():
                 logger.warn(u"save one failed for article:%s", article['title'])
 
     def get_and_save_article_detail(self, url, article_id, wechat_id, wechat_name, title):
-        html = get_html(url)
-        if not html:
-            return False
-        content = format_html(html)
-        db.clear_stats()
-        db.table("wechat_article_detail").add({
-                'article_id': article_id,
-                'content_url': url,
-                'title': title,
-                'wechat_id': wechat_id,
-                'wechat_name': wechat_name,
-                'html': content
-                })
-        logger.debug("into detail:%s", article_id)
-        global g_new_articles
-        g_new_articles += 1
-        return True
+        try:
+            html = get_html(url)
+            if not html:
+                return False, None
+            html, all_text = format_html(html)
+            db.clear_stats()
+            db.table("wechat_article_detail").add({
+                    'article_id': article_id,
+                    'content_url': url,
+                    'title': title,
+                    'wechat_id': wechat_id,
+                    'wechat_name': wechat_name,
+                    'html': html
+                    })
+            logger.debug("into detail:%s", article_id)
+            global g_new_articles
+            g_new_articles += 1
+            return True, {'all_text':all_text}
+
+        except Exception as e:
+            print(e)
+            logger.warn("get_and_save_article_detail error:%s", e.message)
+
+        return False, None
 
     def _save_one(self, data, wechat_id, wechat_name):
         db.clear_stats()
@@ -102,14 +110,9 @@ class ArticleCrawler():
         title = data['title'].encode("utf-8")
         article_id = gen_article_id(url)
 
-        try:
-            succ = self.get_and_save_article_detail(url, article_id, wechat_id, wechat_name, title)
-            if not succ:
-                logger.warn("article_id:%d get_and_save_article_detail error, url:%s", article_id, url)
-                return
-        except Exception as e:
-            print(e)
-            logger.warn("get_and_save_article_detail error:%s", e.message)
+        succ, ana_data = self.get_and_save_article_detail(url, article_id, wechat_id, wechat_name, title)
+        if not succ:
+            logger.warn("article_id:%d get_and_save_article_detail error, url:%s", article_id, url)
             return
 
         db.clear_stats()

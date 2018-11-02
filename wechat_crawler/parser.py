@@ -33,8 +33,8 @@ class Parser():
         soup.decode()
         return text
 
-    def _tripToomanyLevel(self, level = 10):
-        soup = BeautifulSoup(self.doc, 'lxml')
+    def _tripToomanyLevel(self, doc, level = 10):
+        soup = BeautifulSoup(doc, 'lxml')
         roots = soup.find_all(recursive=False)
         tags = dfs(roots[0], level)
         for tag in tags:
@@ -46,12 +46,29 @@ class Parser():
             tag.decompose()
         return soup.decode()
 
-    def formatForWechat(self):
-        new_doc = self._tripToomanyLevel()
-        soup = BeautifulSoup(new_doc, 'lxml')
-        filters = ['image', 'img', 'title', 'style', 'script']
+    def _formatImage(self, doc):
+        soup = BeautifulSoup(doc, 'lxml')
+        filters = ['image', 'img']
         tags = soup.find_all(filters)
-        to_del_tags = []
+        for tag in tags:
+            if tag.has_attr('src'):
+                if len(tag['src']) < 5:
+                    tag.decompose()
+            elif tag.has_attr('data-src'):
+                if len(tag['data-src']) < 5:
+                    tag.decompose()
+            else: 
+                tag.decompose()
+        return soup.decode()
+
+
+    def formatForWechat(self):
+        new_doc = self._tripToomanyLevel(self.doc)
+        new_doc = self._formatImage(new_doc)
+        soup = BeautifulSoup(new_doc, 'lxml')
+        #filters = ['image', 'img', 'title', 'style', 'script']
+        filters = ['title', 'style', 'script']
+        tags = soup.find_all(filters)
         for tag in tags:
             tag.decompose()
         return soup.decode()
