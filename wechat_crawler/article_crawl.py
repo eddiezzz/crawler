@@ -87,12 +87,6 @@ class ArticleCrawler():
                     'title': title,
                     'wechat_id': wechat_id,
                     'wechat_name': wechat_name,
-                    'tag1': tag_list[0][0],
-                    'tag1_weight': tag_list[0][1],
-                    'tag2': tag_list[1][0],
-                    'tag2_weight': tag_list[1][1],
-                    'tag3': tag_list[2][0],
-                    'tag3_weight': tag_list[2][1],
                     'html': html
                     })
             logger.debug("into detail:%s", article_id)
@@ -123,6 +117,7 @@ class ArticleCrawler():
             logger.warn("article_id:%d get_and_save_article_detail error, url:%s", article_id, url)
             return
 
+        tag_list = ana_data['tags']
         db.clear_stats()
         db.table("wechat_article_profile").add({
                 'article_id': article_id,
@@ -139,7 +134,13 @@ class ArticleCrawler():
                 'type': data['type'],
                 'abstract': data['abstract'],
                 'wechat_id': wechat_id,
-                'wechat_name': wechat_name
+                'wechat_name': wechat_name,
+                'tag1': tag_list[0][0],
+                'tag1_weight': tag_list[0][1],
+                'tag2': tag_list[1][0],
+                'tag2_weight': tag_list[1][1],
+                'tag3': tag_list[2][0],
+                'tag3_weight': tag_list[2][1]
                 })
         logger.debug("into profile:%s", article_id)
 
