@@ -17,3 +17,5 @@ insert into wechat_mp_crawl(wechat_id) values('shangjiexinmeiti');
 insert into wechat_mp_crawl(wechat_id) values('techcrunchcn');
 insert into wechat_mp_crawl(wechat_id) values('WebNotes');
 insert into wechat_mp_crawl(wechat_id) values('wow36kr');
+
+insert into kol(userid) values('eddie');

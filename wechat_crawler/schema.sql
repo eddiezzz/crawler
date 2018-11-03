@@ -73,14 +73,37 @@ CREATE TABLE `wechat_article_stat` (
   UNIQUE KEY `article_id`(`article_id`) 
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS `user_info`;
+CREATE TABLE `user_info` (
+  `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `userid` varchar(30) NOT NULL COMMENT 'userid',
+  `nickname` varchar(30) NOT NULL COMMENT 'nickname',
+  `tags` varchar(100) NOT NULL COMMENT '',
+  `intro` varchar(200) NOT NULL COMMENT '',
+  `sub_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '加入时间',
+  PRIMARY KEY (`_id`),
+  INDEX `userid`(`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
 DROP TABLE IF EXISTS `user_subs`;
 CREATE TABLE `user_subs` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `userid` int(11) NOT NULL COMMENT 'userid',
-  `sub_wx` varchar(20) NOT NULL COMMENT '公众号',
+  `userid` varchar(30) NOT NULL COMMENT 'userid',
+  `sub_wx` varchar(30) NOT NULL COMMENT '公众号',
   `sub_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '加入订阅时间',
+  PRIMARY KEY (`_id`),
+  INDEX `userid`(`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `kol`;
+CREATE TABLE `kol` (
+  `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `userid` varchar(30) NOT NULL COMMENT 'userid',
+  `sub_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '加入订阅时间',
+  INDEX `userid`(`userid`),
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
 
 DROP TABLE IF EXISTS `wechat_article_detail`;
 CREATE TABLE `wechat_article_detail` (
