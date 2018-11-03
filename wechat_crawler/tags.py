@@ -15,7 +15,7 @@ tr4w = TextRank4Keyword()
 def ana_tags(text):
     ret = []
     tr4w.analyze(text=text, lower=True, window=2)   # py2中text必须是utf8编码的str或者unicode对象，py3中必须是utf8编码的bytes或者str对象
-    for item in tr4w.get_keywords(3, word_min_len=1):
+    for item in tr4w.get_keywords(3, word_min_len=2):
         ret.append((item.word,item.weight))
     return ret
 
