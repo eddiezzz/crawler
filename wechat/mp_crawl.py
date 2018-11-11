@@ -23,7 +23,7 @@ class WechatMpCrawler():
     def fetch(self, wechat_id):
         timeutil.sleep()
         logger.info("search for wechat_id:%s", wechat_id)
-        return self.wechat.get_gzh_info(wechat_id, identify_image_callback=identify_image_callback_by_rk)
+        return self.wechat.get_gzh_info(wechat_id, identify_image_callback=identify_sogou_image)
 
     def save(self, data):
         db.table("wechat_mp_profile").add({

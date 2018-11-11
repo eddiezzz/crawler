@@ -2,7 +2,7 @@
 from five import *
 import datetime, time, random
 from mysql import *
-import logging
+import logging, sys
 import wechatsogou
 from util import *
 from urllib2 import Request, urlopen
@@ -13,7 +13,7 @@ from image_ocr import *
 from parser import *
 import tags
 
-logging.basicConfig(level=logging.INFO, format='[%(asctime)s - %(filename)s:%(lineno)d] - %(levelname)s: %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s - %(filename)s:%(lineno)d] - %(levelname)s: %(message)s')
 logger = logging.getLogger()
 db = mysql()
 timeutil = TimeUtil(3, 10)
@@ -55,10 +55,21 @@ class ProfileSource():
 class ArticleCrawler():
     def __init__(self):
         self.wechat = wechatsogou.WechatSogouAPI(captcha_break_time=1)
+        self.failed = 0
+        self.fail_threshold = 20
 
     def fetch_mp_articles(self, wechat_id):
         timeutil.sleep()
-        res = self.wechat.get_gzh_article_by_history(wechat_id, identify_image_callback_sogou=identify_image_callback_by_rk, identify_image_callback_weixin=identify_image_callback_by_rk)
+        try:
+            res = self.wechat.get_gzh_article_by_history(wechat_id, identify_image_callback_sogou=identify_sogou_image, identify_image_callback_weixin=identify_weixin_image)
+        except Exception as e:
+            logger.warn(e)
+            logger.warn(u"get_gzh_article_by_history failed:%s", e.message)
+            self.failed += 1
+            if self.failed > self.fail_threshold:
+                logger.warn(u"too many exception for wechat.get_gzh_xxx, exit to check ocr, failed:%d, threshold:%d", self.failed, self.threshold)
+                sys.exit(1)
+            return None
         return res
 
     def save(self, data):
