@@ -3,8 +3,6 @@ SET FOREIGN_KEY_CHECKS=0;
 create database IF NOT EXISTS techwood_new DEFAULT charset utf8mb4;
 use techwood_new;
 
-
-DROP TABLE IF EXISTS `wechat_mp_crawl`;
 CREATE TABLE `wechat_mp_crawl` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `wechat_name` varchar(50) DEFAULT '' COMMENT '要添加的公众号名称',
@@ -13,7 +11,6 @@ CREATE TABLE `wechat_mp_crawl` (
   UNIQUE KEY (`wechat_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `wechat_mp_profile`;
 CREATE TABLE `wechat_mp_profile` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'increment id',
   `wechat_name` varchar(30) DEFAULT '' COMMENT 'name',
@@ -30,9 +27,7 @@ CREATE TABLE `wechat_mp_profile` (
   UNIQUE KEY `wechat_id`(`wechat_id`) 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `wechat_mp_stat`;
 
-DROP TABLE IF EXISTS `wechat_article_profile`;
 CREATE TABLE `wechat_article_profile` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `article_id` varchar(50) NULL COMMENT 'ID',
@@ -61,7 +56,6 @@ CREATE TABLE `wechat_article_profile` (
   INDEX `wechat_id`(`wechat_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `wechat_article_stat`;
 CREATE TABLE `wechat_article_stat` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `article_id` varchar(50) NULL COMMENT 'ID',
@@ -73,7 +67,6 @@ CREATE TABLE `wechat_article_stat` (
   UNIQUE KEY `article_id`(`article_id`) 
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `userid` varchar(30) NOT NULL COMMENT 'userid',
@@ -85,7 +78,6 @@ CREATE TABLE `user_info` (
   INDEX `userid`(`userid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `user_subs`;
 CREATE TABLE `user_subs` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `userid` varchar(30) NOT NULL COMMENT 'userid',
@@ -95,7 +87,6 @@ CREATE TABLE `user_subs` (
   INDEX `userid`(`userid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `kol`;
 CREATE TABLE `kol` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `userid` varchar(30) NOT NULL COMMENT 'userid',
@@ -105,7 +96,6 @@ CREATE TABLE `kol` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `wechat_article_detail`;
 CREATE TABLE `wechat_article_detail` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `title` varchar(300) DEFAULT '' COMMENT '文章标题',
