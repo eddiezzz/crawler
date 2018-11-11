@@ -163,7 +163,7 @@ class mysql():
             vs += "'" + str(v).replace('\'', '\\\'') + "',"
         if hasattr(self, 'tablename'):
             sql = "insert into `" + self.tablename + "` (" + ks[:-1] + ") values (" + vs[:-1] + ")"
-            logger.debug(sql)
+            #logger.debug(sql)
             try:
                 self.__update(sql)
             except pymysql.err.IntegrityError:
@@ -182,7 +182,7 @@ class mysql():
         for k, v in data.items():
             data_sql += "`" + str(k) + "` = '" + str(v) + "',"
         sql = "update `" + self.tablename + "` set " + data_sql[:-1] + " where " + self.where_sql + ";"
-        logger.debug(sql)
+        #logger.debug(sql)
         self.__update(sql)
 
     def find(self, size=25):
@@ -193,7 +193,7 @@ class mysql():
         order_sql = self.order_sql if hasattr(self, 'order_sql') else ""
         limit_sql = self.limit_sql if hasattr(self, 'limit_sql') else ""
         sql = "select " + field_sql + " from `" + self.tablename + "`" + where_sql + order_sql + limit_sql
-        logger.debug(sql)
+        #logger.debug(sql)
         self.__query(sql)
         if size == 0:
             return self.cur.fetchall()
@@ -207,7 +207,7 @@ class mysql():
         """
         where_sql = " where " + self.where_sql if hasattr(self, 'where_sql') else ""
         sql = "delete from `" + self.tablename + "`" + where_sql
-        logger.debug(sql)
+        #logger.debug(sql)
         return self.__delete(sql)
 
     def clear_stats(self):
