@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
-from five import *
+import sys
+sys.path.append('../')
+
+from utils import *
+import config
 import datetime, time, random
 import logging
 from BeautifulSoup import BeautifulSoup
-from rk import RClient
-from config import *
 
 logger = logging.getLogger()
 
 total_failed = 0
 
-g_ocr = RClient(rk_user, rk_passwd, rk_app, rk_key)
+g_ocr = RClient(config.rk_user, config.rk_passwd, config.rk_app, config.rk_key)
 def identify_weixin_image(img):
     random_filename = ("./images/wexin_%d.png") % (time.time())
     im = readimg(img)
@@ -47,7 +49,7 @@ def identify_sogou_image(img):
     im.close()
     return None
 
-def rk_report_error(id):
+def report_error(id):
     pass
 
 
