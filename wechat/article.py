@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
-from five import *
+from utils import *
 import datetime, time, random
-from mysql import *
 import logging, sys
 import wechatsogou
-from util import *
 from urllib2 import Request, urlopen
-import hash
 from BeautifulSoup import BeautifulSoup
 from config import *
-from image_ocr import *
-from parser import *
-import tags
+from algo import *
 
 logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s - %(filename)s:%(lineno)d] - %(levelname)s: %(message)s')
 logger = logging.getLogger()
@@ -36,7 +31,7 @@ def format_html(html):
 
 def gen_article_id(content_url):
     #return mmh3.hash128(content_url)
-    return hash.murmur64(content_url)
+    return murmur64(content_url)
 
 class ProfileSource():
     def gets(self, size = 1000, offset = 0):
@@ -90,7 +85,7 @@ class ArticleCrawler():
             if not html:
                 return False, None
             html, all_text = format_html(html)
-            tag_list = tags.ana_tags(all_text)
+            tag_list = Tags.ana_tags(all_text)
             db.clear_stats()
             db.table("wechat_article_detail").add({
                     'article_id': article_id,

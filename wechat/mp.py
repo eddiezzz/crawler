@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import datetime, time, random
-from mysql import *
+from utils import *
 import logging
 import wechatsogou
-from util import *
-from image_ocr import *
+from algo import *
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s - %(filename)s:%(lineno)d] - %(levelname)s: %(message)s')
 logger = logging.getLogger()

@@ -4,8 +4,9 @@
 import requests
 from hashlib import md5
 from PIL import Image
-from config import *
-
+import sys
+sys.path.append('../')
+import config
 
 class RClient(object):
     def __init__(self, username, password, soft_id, soft_key):
