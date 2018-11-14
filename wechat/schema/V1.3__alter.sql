@@ -1,3 +1,4 @@
+use techwood_new;
 
 CREATE TABLE `topics` (
   `_id` int NOT NULL AUTO_INCREMENT COMMENT '自增ID',

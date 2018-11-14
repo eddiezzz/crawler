@@ -1,3 +1,5 @@
+use techwood_new;
+
 CREATE TABLE `group_profile` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'increment id',
   `name` varchar(100) NOT NULL COMMENT 'name',

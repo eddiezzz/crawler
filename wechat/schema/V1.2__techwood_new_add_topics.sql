@@ -1,3 +1,4 @@
+use techwood_new;
 CREATE TABLE `wechat_mp_crawl` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `wechat_name` varchar(50) DEFAULT '' COMMENT '要添加的公众号名称',
